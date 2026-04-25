@@ -1,3 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/tailwind.css */
+@import "tailwindcss"; 
+
+@theme {
+  /* ถ้าจะมีค่าที่กำหนดเอง (Custom Theme) ให้ใส่ไว้ข้างล่าง @import ครับ */
+}

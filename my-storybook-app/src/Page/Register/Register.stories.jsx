@@ -1,8 +1,6 @@
 import Register from "./Register";
-// เปลี่ยนจาก @storybook/test เป็นตัวเลือกด้านล่างนี้
-import { within, userEvent } from "@storybook/testing-library";
-import { expect } from "@storybook/jest"; 
-import { http, HttpResponse } from "msw";
+import { within, userEvent, expect } from "@storybook/test";
+import { rest } from "msw";
 
 export default {
   title: "RegisterForm",
@@ -11,11 +9,8 @@ export default {
   parameters: {
     msw: {
       handlers: [
-        http.post("https://mockapi.io", () => {
-          return HttpResponse.json(
-            { message: "Register successful!" },
-            { status: 200 }
-          );
+        rest.post("https://65a25d5342ecd7d7f0a771bd.mockapi.io/users", (req, res, ctx) => {
+          return res(ctx.json({ message: "Register successful!" }), ctx.status(200));
         }),
       ],
     },
@@ -43,8 +38,7 @@ export const ErrorState = {
     await userEvent.type(canvas.getByTestId("email"), "invalid-email", {
       delay: 100,
     });
-    // ใช้ getByRole เพื่อความแม่นยำตามมาตรฐาน Storybook
-    await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
+    await userEvent.click(canvas.getByText("Submit"));
 
     await expect(canvas.getByText("Email is invalid")).toBeInTheDocument();
     await expect(canvas.getByText("Name is required")).toBeInTheDocument();
@@ -59,6 +53,6 @@ export const SuccessSubmit = {
     await userEvent.type(canvas.getByTestId("email"), "johndoe@example.com");
     await userEvent.type(canvas.getByTestId("phoneNumber"), "1234567890");
 
-    await userEvent.click(canvas.getByRole("button", { name: /submit/i }));
+    userEvent.click(canvas.getByText("Submit"));
   },
 };

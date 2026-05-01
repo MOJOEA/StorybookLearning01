@@ -1,9 +1,11 @@
-/** @type { import('@storybook/react-vite').Preview } */
 
-import '../src/tailwind.css';
-
-// .storybook/preview.js
 /** @type { import('@storybook/react').Preview } */
+import "../src/tailwind.css";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+// Initialize MSW
+initialize();
+
 const preview = {
   parameters: {
     controls: {
@@ -12,14 +14,8 @@ const preview = {
         date: /Date$/i,
       },
     },
-
-    a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: 'todo'
-    }
   },
+  loaders: [mswLoader],
 };
 
 export default preview;
